@@ -1,5 +1,4 @@
 #define console(...) 20221106 /*20:06:20*/
-#define READ
 #include "bits/stdc++.h" // QioCas
 using namespace std;
 using ll = long long;
@@ -15,8 +14,6 @@ void Solve() {
     for(int i = k + 1; i <= n / 2; ++i) 
         if(s[i] != s[n - i + 1]) return cout << "No\n", void();
     for(int i = 1; i <= 26; ++i) sav[i] = 0;
-    console();
-    console(s);
     for(int i = 1; i <= k; ++i) sav[s[n - i + 1] - 'a' + 1]++;
     for(int i = 1; i <= k; ++i) {
         if(sav[s[i] - 'a' + 1] == 0) return cout << "No\n", void();
