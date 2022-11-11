@@ -3,7 +3,7 @@ using namespace std;
 /*
     Smaller -> a[]
     int cmp(int u, int v) {
-        return a[u] > a[v];
+        return a[u] - a[v];
     }
 */
 template<class T, T (*cmp)(T, T)> struct heap {
