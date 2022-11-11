@@ -1,6 +1,11 @@
 #include "bits/stdc++.h" // QioCas
 using namespace std;
-
+/*
+    Smaller -> a[]
+    int cmp(int u, int v) {
+        return a[u] > a[v];
+    }
+*/
 template<class T, T (*cmp)(T, T)> struct heap {
     int _size = 0;
     int heap[100005];
