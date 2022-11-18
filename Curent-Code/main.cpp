@@ -36,7 +36,7 @@ void Solve() {
     for(int i = 1; i <= n; ++i) ps[i] = ps[i - 1] + a[i];
     for(int i = 1; i <= tt; ++i) {
         ll ansCheck = Check(Q[i].first, Q[i].second);
-        ll ansFull = Check(Q[i].first, Q[i].second);
+        ll ansFull = Full(Q[i].first, Q[i].second);
         cerr << ansCheck << ' ' <<  ansFull << '\n';
         assert(ansCheck == ansFull);
     }
