@@ -21,7 +21,7 @@ void Enter() {
     for(int i = 1; i <= tt; ++i) {
         // cin >> Q[i].first >> Q[i].second;
         Q[i].first = range(1, n);
-        Q[i].second = (n, Q[i].first + range(1, n));
+        Q[i].second = min(n, Q[i].first + range(1, n));
     }
 }
 ll Full(int l, int r) { // O(Q * n)
@@ -36,7 +36,7 @@ void Solve() {
     for(int i = 1; i <= n; ++i) ps[i] = ps[i - 1] + a[i];
     for(int i = 1; i <= tt; ++i) {
         ll ansCheck = Check(Q[i].first, Q[i].second);
-        ll ansFull = Check(Q[i].first, Q[i].second);
+        ll ansFull = Full(Q[i].first, Q[i].second);
         cerr << ansCheck << ' ' <<  ansFull << '\n';
         assert(ansCheck == ansFull);
     }
