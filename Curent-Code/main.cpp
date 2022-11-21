@@ -1,51 +1,40 @@
-#define console(...) void() // 2022/11/18-18:48:48
+#define console(...) void() // 2022/11/20-21:57:07
 #include "bits/stdc++.h" // QioCas
 using namespace std;
 using ll = long long;
-const ll inf = ll(2e18), mod = 1000000009, LOG = ' ', maxN = 200005;
+const ll inf = ll(2e18), mod = 1e8 + 7, LOG = ' ', maxN = 5e5 + 5;
 
-int n, tt;
-ll a[maxN], ps[maxN];
-pair<int, int> Q[maxN];
-mt19937 rd(time(NULL));
-int range(int left, int right) {
-    return uniform_int_distribution<int>(left, right) (rd); 
+
+ll Hash[maxN], revHash[maxN], power[maxN];
+ll gethash(int l, int r) {
+    return (Hash[r] - Hash[l - 1] * (power[r - l + 1]) + mod * mod) % mod;
 }
-void Enter() {
-    // cin >> n >> tt;
-    n = range(1, 100), tt = range(1, 100);
-    for(int i = 1; i <= n; ++i) {
-        // cin >> a[i];
-        a[i] = range(int(-2e9), int(2e9));
-    } 
-    for(int i = 1; i <= tt; ++i) {
-        // cin >> Q[i].first >> Q[i].second;
-        Q[i].first = range(1, n);
-        Q[i].second = (n, Q[i].first + range(1, n));
-    }
+ll getrevhash(int l, int r) {
+    return (revHash[l] - revHash[r + 1] * (power[r - l + 1]) + mod * mod) % mod;
 }
-ll Full(int l, int r) { // O(Q * n)
-    ll total = 0;
-    for(int i = l; i <= r; ++i) total += a[i];
-    return total; 
+bool Palindrome(int l, int r) {
+    return gethash(l, r) == getrevhash(l, r);
 }
-ll Check(int l, int r) { // O(Q * 1)
-    return ps[r] - ps[l - 1];
-}
-void Solve() {
-    for(int i = 1; i <= n; ++i) ps[i] = ps[i - 1] + a[i];
-    for(int i = 1; i <= tt; ++i) {
-        ll ansCheck = Check(Q[i].first, Q[i].second);
-        ll ansFull = Full(Q[i].first, Q[i].second);
-        cerr << ansCheck << ' ' <<  ansFull << '\n';
-        assert(ansCheck == ansFull);
-    }
-}
+int n; string s;
+int ans = 0;
 signed main() { 
     cin.tie(0)->sync_with_stdio(0);
-    for(int rep = 0; rep <= 1000; ++rep) {
-        cerr << "Case " << rep << '\n';
-        Enter();    
-        Solve();
+    cin >> n >> s; s = ' ' + s;
+    assert(n <= 5000);
+    power[0] = 1;
+    for(int i = 1; i <= n; ++i) {
+        Hash[i] = (Hash[i - 1] * 26 + s[i] - 'a') % mod;
+        power[i] = (power[i - 1] * 26) % mod;
     }
+    for(int i = n; i >= 1; --i) 
+        revHash[i] = (revHash[i + 1] * 26 + s[i] - 'a') % mod;
+    for(int i = 1; i <= n; ++i) {
+        for(int j = i + 1; j <= n; j += 2) {
+            if(s[i + 1] != s[j]) break;
+            if(Palindrome(i, j)) ++ans;
+            if(Palindrome(i, j + 1) == true) ++ans;
+        }
+        console(ans);
+    }
+    cout << ans + n;
 }
