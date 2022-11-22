@@ -1,45 +1,26 @@
 #include <bits/stdc++.h>
+#define ll long long
 using namespace std;
-const int oo = 1e5+7;
-#define N 100000
-int n,Q[oo],S[oo],a[oo],L,R,T;
-bool Prime[oo];
-void Enter(){
-    scanf("%d",&n);
-    for(int i=1,r;i<=n;++i) scanf("%d",&r) , a[r]++;
-}
-void Eratos(){
-    fill(Prime+2,+Prime+N+1,true);
-    for(int i=2;i<=N;++i) if(Prime[i]){
-        if(a[i]) Q[i]+=a[i];
-        for(int j=i+i;j<=N;j+=i){
-                Prime[j]=false;
-                if(a[j]) Q[i]+=a[j];
-            }
+bool P[1000007];
+ll Q[1000006],r=0;
+int T,n;
+void eratos(){
+    fill(P,P+1000001,true);
+    for(ll i=2;i<=1000000;++i){
+        if(P[i]) Q[r+1]=Q[r]+i,r++;
+        for(ll j=i*i;j<=1000000;j+=i)
+        P[j]=false;
     }
 }
-
-void Set(){
-    for(int i=2;i<=N;++i)
-        S[i]=S[i-1]+Q[i];
-}
-
 void Process(){
-    scanf("%d%d",&L,&R);
-    if(R>N) R=N;
-    printf("%d\n",S[R]-S[L-1]);
+    cin >> n;
+    cout << Q[n]<<"\n";
 }
-//void Test(){
-//    for(int i=2;i<=100;++i)
-//        printf("%d\t",S[i]);
-//}
 int main(){
-    freopen("PRIME.inp","r",stdin);
-    freopen("PRIME.out","w",stdout);
-    Enter();
-    Eratos();
-    Set();
-    scanf("%d",&T);
+    freopen("nguyento.inp","r",stdin);
+    freopen("nguyento.out","w",stdout);
+    ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+    eratos();
+    cin >> T;
     while(T--) Process();
-    //Test();
 }
