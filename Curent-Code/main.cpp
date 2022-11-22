@@ -1,26 +1,24 @@
-#include <bits/stdc++.h>
-#define ll long long
+#pragma GCC optimize("unroll-loops,02,no-stack-protector")
+#include "bits/stdc++.h" // QioCas
+#define int long long
 using namespace std;
-bool P[1000007];
-ll Q[1000006],r=0;
-int T,n;
-void eratos(){
-    fill(P,P+1000001,true);
-    for(ll i=2;i<=1000000;++i){
-        if(P[i]) Q[r+1]=Q[r]+i,r++;
-        for(ll j=i*i;j<=1000000;j+=i)
-        P[j]=false;
+int n , d;
+int a[2000006];
+int Sum(int x) {
+    return x * (x + 1) / 2LL;
+}
+signed main(){
+    ios::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+    cin >> n >> d; 
+    int x; vector <int> Map (2000006 , 0);
+    for(int i = 1; i <= n; ++i ) cin >> x , Map[x]++;
+    for(int idx = 0, i = 1; i <= 1000000; ++i) 
+        while(Map[i]--) a[++idx] = i;
+    int ans = 0 , idx = 0;
+    for(int i = 3; i <= n; ++i) {
+        while(a[i] - a[idx+1] > d) idx++;
+        ans += max(0LL , Sum(i - idx - 2));
     }
-}
-void Process(){
-    cin >> n;
-    cout << Q[n]<<"\n";
-}
-int main(){
-    freopen("nguyento.inp","r",stdin);
-    freopen("nguyento.out","w",stdout);
-    ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
-    eratos();
-    cin >> T;
-    while(T--) Process();
+
+    cout << ans;
 }
