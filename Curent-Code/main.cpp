@@ -1,40 +1,45 @@
-#define console(...) void() // 2022/11/20-21:57:07
-#include "bits/stdc++.h" // QioCas
+#include <bits/stdc++.h>
 using namespace std;
-using ll = long long;
-const ll inf = ll(2e18), mod = 1e8 + 7, LOG = ' ', maxN = 5e5 + 5;
-
-
-ll Hash[maxN], revHash[maxN], power[maxN];
-ll gethash(int l, int r) {
-    return (Hash[r] - Hash[l - 1] * (power[r - l + 1]) + mod * mod) % mod;
+const int oo = 1e5+7;
+#define N 100000
+int n,Q[oo],S[oo],a[oo],L,R,T;
+bool Prime[oo];
+void Enter(){
+    scanf("%d",&n);
+    for(int i=1,r;i<=n;++i) scanf("%d",&r) , a[r]++;
 }
-ll getrevhash(int l, int r) {
-    return (revHash[l] - revHash[r + 1] * (power[r - l + 1]) + mod * mod) % mod;
-}
-bool Palindrome(int l, int r) {
-    return gethash(l, r) == getrevhash(l, r);
-}
-int n; string s;
-int ans = 0;
-signed main() { 
-    cin.tie(0)->sync_with_stdio(0);
-    cin >> n >> s; s = ' ' + s;
-    assert(n <= 5000);
-    power[0] = 1;
-    for(int i = 1; i <= n; ++i) {
-        Hash[i] = (Hash[i - 1] * 26 + s[i] - 'a') % mod;
-        power[i] = (power[i - 1] * 26) % mod;
+void Eratos(){
+    fill(Prime+2,+Prime+N+1,true);
+    for(int i=2;i<=N;++i) if(Prime[i]){
+        if(a[i]) Q[i]+=a[i];
+        for(int j=i+i;j<=N;j+=i){
+                Prime[j]=false;
+                if(a[j]) Q[i]+=a[j];
+            }
     }
-    for(int i = n; i >= 1; --i) 
-        revHash[i] = (revHash[i + 1] * 26 + s[i] - 'a') % mod;
-    for(int i = 1; i <= n; ++i) {
-        for(int j = i + 1; j <= n; j += 2) {
-            if(s[i + 1] != s[j]) break;
-            if(Palindrome(i, j)) ++ans;
-            if(Palindrome(i, j + 1) == true) ++ans;
-        }
-        console(ans);
-    }
-    cout << ans + n;
+}
+
+void Set(){
+    for(int i=2;i<=N;++i)
+        S[i]=S[i-1]+Q[i];
+}
+
+void Process(){
+    scanf("%d%d",&L,&R);
+    if(R>N) R=N;
+    printf("%d\n",S[R]-S[L-1]);
+}
+//void Test(){
+//    for(int i=2;i<=100;++i)
+//        printf("%d\t",S[i]);
+//}
+int main(){
+    freopen("PRIME.inp","r",stdin);
+    freopen("PRIME.out","w",stdout);
+    Enter();
+    Eratos();
+    Set();
+    scanf("%d",&T);
+    while(T--) Process();
+    //Test();
 }
